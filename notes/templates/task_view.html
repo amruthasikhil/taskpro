@@ -1,0 +1,85 @@
+{% extends 'base.html' %}
+
+{% block main_block %}
+
+    <div class="container">
+
+        
+
+    <h4 class="mt-5">Listing Tasks</h4>
+    <div class="container my-3">
+        <div class="w-50 mx-auto">
+        <form action="">
+            <select name="category" id="" class="form-select" onchange="this.form.submit()">
+                <option value="all" {% if selected == 'all'%} selected {% endif %}>All</option>{}
+                <option value="personal" {% if selected == 'personal'%} selected {% endif %}>Personal</option>
+                <option value="business" {% if selected == 'business'%} selected {% endif %}>Business</option>
+            </select>
+        </form>
+
+        <form action="{% url 'task-view' %}" class="mt-3">
+           <input class="form-control w-50" type="text" placeholder="Enter Key word here.." name="search_text">
+           <button type="submit" class="btn btn-primary">Search</button>
+        </form>
+    </div>
+    </div>
+
+    
+
+    <div class="row">
+    {%for i in tasks %}
+    
+
+        <div class="col-4">
+            <div class="card  text-white bg-dark mb-3" style="max-width: 18rem;">
+                <div class="card-header text-white d-flex justify-content-between">
+                    <div>{{i.user}}</div>
+                    <div> 
+
+
+                         
+                        {% if i.status == "pending" %}
+                        <div class="spinner-grow text-danger" role="status">
+                        <span class="bg-danger rounded"></span>
+                    </div>
+                        {% endif %}
+
+                        {% if i.status == "in-progress" %}
+                        <div class="spinner-grow text-warning" role="status">
+                        <span class="bg-warning rounded"></span>
+                        </div>
+                        {% endif %}
+                        
+
+                        {% if i.status == "done" %}
+                        <div class="spinner-grow text-success" role="status">
+                        <span class="bg-success rounded"></span>
+                        </div>
+                        {% endif %}
+                        
+
+                    </div>
+                </div>
+                <div class="card-body text-white">
+                    <h5 class="card-title">{{i.title}}</h5>
+                    <p class="card-text">{{i.description}}</p>
+                </div>
+                <div class="card-footer text-body-white">
+                    created_date:{{i.created_date|date}}
+                    Due date:{{i.due_date|date}}
+                    Last updated date:{{i.updated_date|date}}
+
+                    <a href="{%url 'task-update' i.id %}">View</a>
+                    <a href="{%url 'task-delete' i.id %}">Remove</a>
+            
+                </div>
+            </div>
+        </div>
+
+  
+    {%endfor%}
+   </div>
+
+</div>
+
+{% endblock %}
